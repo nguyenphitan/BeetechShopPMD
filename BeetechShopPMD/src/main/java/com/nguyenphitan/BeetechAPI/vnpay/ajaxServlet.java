@@ -22,15 +22,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -41,87 +36,87 @@ import com.google.gson.JsonObject;
  */
 @RestController
 @RequestMapping("/vnpay_jsp")
-public class ajaxServlet extends HttpServlet {
+public class AjaxServlet extends HttpServlet {
 	
     @PostMapping("/vnpayajax")
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String vnp_Version = "2.1.0";
-        String vnp_Command = "pay";
-        String vnp_OrderInfo = req.getParameter("vnp_OrderInfo");
+        String vnpVersion = "2.1.0";
+        String vnpCommand = "pay";
+        String vnpOrderInfo = req.getParameter("vnp_OrderInfo");
         String orderType = req.getParameter("ordertype");
-        String vnp_TxnRef = Config.getRandomNumber(8);
-        String vnp_IpAddr = Config.getIpAddress(req);
-        String vnp_TmnCode = Config.vnp_TmnCode;
+        String vnpTxnRef = Config.getRandomNumber(8);
+        String vnpIpAddr = Config.getIpAddress(req);
+        String vnpTmnCode = Config.vnpTmnCode;
         
         int amount = Integer.parseInt(req.getParameter("amount")) * 100;
         
-        Map<String, String> vnp_Params = new HashMap<>();
-        vnp_Params.put("vnp_Version", vnp_Version);
-        vnp_Params.put("vnp_Command", vnp_Command);
-        vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-        vnp_Params.put("vnp_Amount", String.valueOf(amount));
-        vnp_Params.put("vnp_CurrCode", "VND");
-        String bank_code = req.getParameter("bankcode");
-        if (bank_code != null && !bank_code.isEmpty()) {
-            vnp_Params.put("vnp_BankCode", bank_code);
+        Map<String, String> vnpParams = new HashMap<>();
+        vnpParams.put("vnp_Version", vnpVersion);
+        vnpParams.put("vnp_Command", vnpCommand);
+        vnpParams.put("vnp_TmnCode", vnpTmnCode);
+        vnpParams.put("vnp_Amount", String.valueOf(amount));
+        vnpParams.put("vnp_CurrCode", "VND");
+        String bankCode = req.getParameter("bankcode");
+        if (bankCode != null && !bankCode.isEmpty()) {
+            vnpParams.put("vnp_BankCode", bankCode);
         }
-        vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        vnp_Params.put("vnp_OrderInfo", vnp_OrderInfo);
-        vnp_Params.put("vnp_OrderType", orderType);
+        vnpParams.put("vnp_TxnRef", vnpTxnRef);
+        vnpParams.put("vnp_OrderInfo", vnpOrderInfo);
+        vnpParams.put("vnp_OrderType", orderType);
 
         String locate = req.getParameter("language");
         if (locate != null && !locate.isEmpty()) {
-            vnp_Params.put("vnp_Locale", locate);
+            vnpParams.put("vnp_Locale", locate);
         } else {
-            vnp_Params.put("vnp_Locale", "vn");
+            vnpParams.put("vnp_Locale", "vn");
         }
-        vnp_Params.put("vnp_ReturnUrl", Config.vnp_Returnurl);
-        vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+        vnpParams.put("vnp_ReturnUrl", Config.vnpReturnurl);
+        vnpParams.put("vnp_IpAddr", vnpIpAddr);
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
-        String vnp_CreateDate = formatter.format(cld.getTime());
+        String vnpCreateDate = formatter.format(cld.getTime());
 
-        vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+        vnpParams.put("vnp_CreateDate", vnpCreateDate);
         cld.add(Calendar.MINUTE, 15);
-        String vnp_ExpireDate = formatter.format(cld.getTime());
+        String vnpExpireDate = formatter.format(cld.getTime());
         //Add Params of 2.0.1 Version
-        vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+        vnpParams.put("vnp_ExpireDate", vnpExpireDate);
         //Billing
-        vnp_Params.put("vnp_Bill_Mobile", req.getParameter("txt_billing_mobile"));
-        vnp_Params.put("vnp_Bill_Email", req.getParameter("txt_billing_email"));
+        vnpParams.put("vnp_Bill_Mobile", req.getParameter("txt_billing_mobile"));
+        vnpParams.put("vnp_Bill_Email", req.getParameter("txt_billing_email"));
         String fullName = (req.getParameter("txt_billing_fullname")).trim();
         if (fullName != null && !fullName.isEmpty()) {
             int idx = fullName.indexOf(' ');
             String firstName = fullName.substring(0, idx);
             String lastName = fullName.substring(fullName.lastIndexOf(' ') + 1);
-            vnp_Params.put("vnp_Bill_FirstName", firstName);
-            vnp_Params.put("vnp_Bill_LastName", lastName);
+            vnpParams.put("vnp_Bill_FirstName", firstName);
+            vnpParams.put("vnp_Bill_LastName", lastName);
 
         }
-        vnp_Params.put("vnp_Bill_Address", req.getParameter("txt_inv_addr1"));
-        vnp_Params.put("vnp_Bill_City", req.getParameter("txt_bill_city"));
-        vnp_Params.put("vnp_Bill_Country", req.getParameter("txt_bill_country"));
+        vnpParams.put("vnp_Bill_Address", req.getParameter("txt_inv_addr1"));
+        vnpParams.put("vnp_Bill_City", req.getParameter("txt_bill_city"));
+        vnpParams.put("vnp_Bill_Country", req.getParameter("txt_bill_country"));
         if (req.getParameter("txt_bill_state") != null && !req.getParameter("txt_bill_state").isEmpty()) {
-            vnp_Params.put("vnp_Bill_State", req.getParameter("txt_bill_state"));
+            vnpParams.put("vnp_Bill_State", req.getParameter("txt_bill_state"));
         }
         // Invoice
-        vnp_Params.put("vnp_Inv_Phone", req.getParameter("txt_inv_mobile"));
-        vnp_Params.put("vnp_Inv_Email", req.getParameter("txt_inv_email"));
-        vnp_Params.put("vnp_Inv_Customer", req.getParameter("txt_inv_customer"));
-        vnp_Params.put("vnp_Inv_Address", req.getParameter("txt_inv_addr1"));
-        vnp_Params.put("vnp_Inv_Company", req.getParameter("txt_inv_company"));
-        vnp_Params.put("vnp_Inv_Taxcode", req.getParameter("txt_inv_taxcode"));
-        vnp_Params.put("vnp_Inv_Type", req.getParameter("cbo_inv_type"));
+        vnpParams.put("vnp_Inv_Phone", req.getParameter("txt_inv_mobile"));
+        vnpParams.put("vnp_Inv_Email", req.getParameter("txt_inv_email"));
+        vnpParams.put("vnp_Inv_Customer", req.getParameter("txt_inv_customer"));
+        vnpParams.put("vnp_Inv_Address", req.getParameter("txt_inv_addr1"));
+        vnpParams.put("vnp_Inv_Company", req.getParameter("txt_inv_company"));
+        vnpParams.put("vnp_Inv_Taxcode", req.getParameter("txt_inv_taxcode"));
+        vnpParams.put("vnp_Inv_Type", req.getParameter("cbo_inv_type"));
         //Build data to hash and querystring
-        List fieldNames = new ArrayList(vnp_Params.keySet());
+        List fieldNames = new ArrayList(vnpParams.keySet());
         Collections.sort(fieldNames);
         StringBuilder hashData = new StringBuilder();
         StringBuilder query = new StringBuilder();
         Iterator itr = fieldNames.iterator();
         while (itr.hasNext()) {
             String fieldName = (String) itr.next();
-            String fieldValue = (String) vnp_Params.get(fieldName);
+            String fieldValue = (String) vnpParams.get(fieldName);
             if ((fieldValue != null) && (fieldValue.length() > 0)) {
                 //Build hash data
                 hashData.append(fieldName);
@@ -138,10 +133,10 @@ public class ajaxServlet extends HttpServlet {
             }
         }
         String queryUrl = query.toString();
-        String vnp_SecureHash = Config.hmacSHA512(Config.vnp_HashSecret, hashData.toString());
-        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-        String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
-        com.google.gson.JsonObject job = new JsonObject();
+        String vnpSecureHash = Config.hmacSHA512(Config.vnpHashSecret, hashData.toString());
+        queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
+        String paymentUrl = Config.vnpPayUrl + "?" + queryUrl;
+        JsonObject job = new JsonObject();
         job.addProperty("code", "00");
         job.addProperty("message", "success");
         job.addProperty("data", paymentUrl);

@@ -25,11 +25,11 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class Config {
 
-    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_Returnurl = "http://localhost:8081/vnpay_return";
-    public static String vnp_TmnCode = "PU9YGNVW";
-    public static String vnp_HashSecret = "WLTQBKWRHSDXULJREKQIEQAQQDNANZCR";
-    public static String vnp_apiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
+    public static String vnpPayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    public static String vnpReturnurl = "http://localhost:8081/vnpay_return";
+    public static String vnpTmnCode = "PU9YGNVW";
+    public static String vnpHashSecret = "WLTQBKWRHSDXULJREKQIEQAQQDNANZCR";
+    public static String vnpApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/merchant.html";
 
     public static String md5(String message) {
         String digest = null;
@@ -54,7 +54,7 @@ public class Config {
         return digest;
     }
 
-    public static String Sha256(String message) {
+    public static String sha256(String message) {
         String digest = null;
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -84,7 +84,7 @@ public class Config {
         try {
 
             if (key == null || data == null) {
-                throw new NullPointerException();
+//                throw new NullPointerException();
             }
             final Mac hmac512 = Mac.getInstance("HmacSHA512");
             byte[] hmacKeyBytes = key.getBytes();
@@ -115,7 +115,7 @@ public class Config {
         while (itr.hasNext()) {
             String fieldName = (String) itr.next();
             String fieldValue = (String) fields.get(fieldName);
-            if ((fieldValue != null) && (fieldValue.length() > 0)) {
+            if (fieldValue != null && fieldValue.length() > 0) {
                 sb.append(fieldName);
                 sb.append("=");
                 sb.append(fieldValue);
@@ -124,7 +124,7 @@ public class Config {
                 sb.append("&");
             }
         }
-        return hmacSHA512(com.nguyenphitan.BeetechAPI.vnpay.Config.vnp_HashSecret, sb.toString());
+        return hmacSHA512(com.nguyenphitan.BeetechAPI.vnpay.Config.vnpHashSecret, sb.toString());
     }
 
     public static String getIpAddress(HttpServletRequest request) {
