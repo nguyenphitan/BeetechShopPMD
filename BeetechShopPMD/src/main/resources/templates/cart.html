@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaCompany</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/gird.css}">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <link rel="stylesheet" th:href="@{/css/account.css}">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/fonts/fontawesome-free-5.15.4-web/css/all.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style type="text/css">
+    	.t-text-right {
+    		text-align: right;
+    	}
+    	
+    	.t-no-click {
+    		pointer-events: none;
+    	}
+    	
+    	.t-hide {
+    		display: none;
+    	}
+    	
+    	.t-inline-block {
+    		display: inline-block;
+    	}
+    	
+    	.t-m-top-30 {
+    		margin-top: 30px;
+    	}
+    	
+    	.t-line-2em {
+    		line-height: 2em;
+    	}
+    	
+    	.t-top-8 {
+    		margin-top: 8px;
+    	}
+    	
+    	.t-pointer {
+    		cursor: pointer;
+    	}
+    	
+    </style>
+</head>
+<body>
+    <span style="display: none;" class="t-user-id" th:text="${session.idUser}"></span>
+    <div class="app">
+		<span class="t-token t-hide" th:text="${session.token == null ? 'null' : session.token}"></span>
+        <!-- Start header -->
+        <header class="header">
+            <div class="grid header-container">
+                <!-- Start header with logo -->
+                <div class="header-with-logo">
+                    <a href="/" class="header-logo-link">
+                        <div class="header-logo"></div>
+                    </a>
+
+                    <div class="header-delivery-with-serach">
+                        <div class="header-delivery">
+                            <div class="header-delivery_item active">
+                                <i class="fas fa-shipping-fast header-delivery_item-logo"></i>
+                                <span class="header-delivery_item-text">Đặt giao hàng</span>
+                            </div>
+                            <div class="header-delivery_item">
+                                <i class="fas fa-store-alt header-delivery_item-logo"></i>
+                                <span class="header-delivery_item-text">Đặt đến lấy</span>
+                            </div>
+                        </div>
+
+                        <div class="header-search block">
+                            <i class="fas fa-map-marker-alt header-search-map"></i>
+                            <input class="header-search_title" placeholder="Nhập địa chỉ của bạn"></input>
+                        </div>
+
+                        <div class="header-search">
+                            <i class="fas fa-store header-search-map"></i>
+                            <input class="header-search_title" placeholder="Nhập cửa hàng"></input>
+
+                            
+                            <div class="header-search_store">
+                                <ul class="header-search_store-item">
+                                    <li class="header-search_store-list">The Pizza Company Cầu Giấy</li>
+                                    <li class="header-search_store-list">The Pizza Company Times City</li>
+                                    <li class="header-search_store-list">The Pizza Company Đoàn Trần Nghiệp</li>
+                                    <li class="header-search_store-list">The Pizza Company Xuân Diệu</li>
+                                    <li class="header-search_store-list">The Pizza Company Vincom Bắc Từ Liêm</li>
+                                    <li class="header-search_store-list">The Pizza Company Vincom Royal City</li>
+                                    <li class="header-search_store-list">The Pizza Company Aeon Mall Long Biên</li>
+                                    <li class="header-search_store-list">The Pizza Company Aeon Mall Hà Đông</li>
+                                    <li class="header-search_store-list">The Pizza Company Linh Đàm</li>
+                                    <li class="header-search_store-list">The Pizza Company Trần Duy Hưng</li>
+                                    <li class="header-search_store-list">The Pizza Company Song Hành</li>
+                                    <li class="header-search_store-list">The Pizza Company Nguyễn Thị Minh Khai</li>
+                                    <li class="header-search_store-list">The Pizza Company 333 Lê Văn Sỹ</li>
+                                    <li class="header-search_store-list">The Pizza Company Bà Hom</li>
+                                    <li class="header-search_store-list">The Pizza Company Crescent Mall</li>
+                                    <li class="header-search_store-list">The Pizza Company Phạm Hùng</li>
+                                    <li class="header-search_store-list">The Pizza Company Hoàng Hoa Thám</li>
+                                    <li class="header-search_store-list">The Pizza Company Thống Nhất</li>
+                                    <li class="header-search_store-list">The Pizza Company AEON Mall Tân Phú</li>
+                                    <li class="header-search_store-list">The Pizza Company Vincom Biên Hòa</li>
+                                    <li class="header-search_store-list">The Pizza Company Pegasus</li>
+                                    <li class="header-search_store-list">The Pizza Company Sense City Bến Tre</li>
+                                    <li class="header-search_store-list">The Pizza Company Vincom Buôn Ma Thuột</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="header-account">
+                    	<!-- logined -->
+                    	<div class="header-account_login" th:if="${session.username}">
+                    		<i class="far fa-user header-account_login-icon"></i>
+                            <a href="#" class="header-account-text" th:text="${session.username}"></a>
+                        </div>
+                        
+                        <!-- if not login -->
+                        <div class="header-account_login" th:unless="${session.username}">
+                            <i class="far fa-user header-account_login-icon"></i>
+                            <a th:href="@{/auth/login}" class="header-account-text">Đăng nhập</a>
+                        </div>
+                        <span>/</span>
+                        <div class="header-account_register" th:unless="${session.username}">
+                            <a th:href="@{/auth/register}" class="header-account-text">Tạo tài khoản</a>
+                        </div>
+                        
+                        <!-- logined -->
+                        <div class="header-account_login" th:if="${session.username}">
+                            <a th:href="@{/api/v1/auth/logout}" class="header-account-text" >Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End header with logo -->
+
+                <!-- Start navbar -->
+                <nav class="navbar">
+                    <div class="navbar-select">
+                        <ul class="navbar-list">
+                            <li class="navbar-list_item">
+                                <a href="/" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Trang chủ</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item" th:if="${session.role == 'ADMIN'}">
+                                <a th:href="${session.role == 'ADMIN' ? '/admin-product' : '#'}" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý gian hàng</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="navbar-with-search">
+                        <div class="navbar_search" onclick="document.querySelector('.search_box').classList.toggle('active')">
+                            <i class="fas fa-search navbar_search-icon" ></i>
+                        </div>
+
+                        <div class="search_box">
+                            <form>
+                                <input type="text" name="keyword" id="" class="search_box_input" placeholder="Tìm sản phẩm">
+                                <button type="submit" class="search_box_btn">
+                                    <i class="fas fa-search navbar_search-icon"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                        <div class="navbar_cart">
+                            <a href="" class="navbar_cart-icon-link">
+                                <i class="fas fa-shopping-cart navbar_cart-icon"></i>
+                            </a>
+                            <a href="#" class="navbar_cart-link">
+                                <span class="navbar_cart-text">Giỏ hàng</span>
+                            </a>
+                            <div class="navbar_cart-amount">
+                                <span class="navbar_cart-count" th:text="${session.cartSize}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+                <!-- Start navbar -->
+            </div>
+        </header>
+        <!-- End header -->
+
+        <div class="container">
+        
+            <div class="grid fix-wide" th:if="${session.cartSize}">
+                <div id="hai_san_pesto" class="product-decrip">
+                    <span class="product-name">Giỏ hàng</span>
+                </div>
+                <div class="row">
+                    <div class="col l-12">
+                        <div class="product-cart" th:each="cartResponse, index : ${listProducts}">
+                            <img th:src="@{${cartResponse.product.photos}}" alt="" class="product-cart__img" />
+                            <div class="product-cart__content">
+                                <div class="product-cart__content-title t-product-name" th:text="${cartResponse.product.name}"></div>
+                                <div class="product-cart__content-decrip" th:text="'Còn lại: ' + ${cartResponse.product.quantity}"></div>
+                                <span class="t-quantity" th:text="${cartResponse.product.quantity}" style="display: none;"></span>
+                                <span class="t-product-id t-hide" th:text="${cartResponse.product.id}"></span>
+                            </div>
+                            <div class="product-cart__price-old t-text-right" th:text="${cartResponse.product.price}"></div>
+                            
+                            <!--<div class="product-cart__count"><%=c.getQuantity()%></div>-->
+                            <a class="product-cart__btn_left"><i class="fas fa-angle-left t-no-click"></i></a> 
+                            <input type="text" name="quantity" min="1" th:value="${cartResponse.quantity}" class="product-cart__quantity t-quantity-selected" readonly>
+                            <a class="product-cart__btn_right"><i class="fas fa-angle-right t-no-click"></i></a> 
+                            
+                            <div class="product-cart__price t-text-right"></div>
+                            <span class="cart-id t-hide" th:text="${cartResponse.id}"></span>
+                            <a class="product-cart__delete">
+                                <i class="fas fa-trash-alt t-no-click"></i>
+                            </a>
+                            <span class="product-id t-hide" th:text="${cartResponse.product.id}"></span>
+                        </div>
+                    </div>         
+                </div>
+                <div class="product-pay">
+                    <div class="t-inline-block">
+                    	<span class="product-pay__title">Tổng:</span>
+                    	<span class="product-pay__price t-text-right"></span>
+                    </div>
+                    
+                    <!-- Handle discount -->
+                	<div class="t-inline-block t-top-8">
+						<span style="color: blue;">
+							<strong>Giảm giá:</strong> 
+							<strong th:text="${currentDiscount}"></strong>
+							<strong>%</strong>
+						</span>
+						<span style="margin-left: 30px; font-style: italic; color: red">
+							<span>( Mua thêm</span> 
+							<span class="t-need" th:text="${valueToNextDiscount}"></span>
+							<span>để được giảm</span>
+							<span th:text="${nextDiscount}"></span>
+							<span>% )</span>	
+						</span>													
+					</div>
+					<div class="t-inline-block t-top-8" style="color: black">
+						<strong>Trừ:</strong>
+						<strong>-</strong>
+						<strong th:text="${discountValue}"></strong>
+					</div>
+					<div class="t-top-8">
+						<strong>Thành tiền:</strong> 
+						<strong th:text="${realCart}"></strong>
+					</div>
+                
+                	<!-- End handle discount -->
+                	
+                	<!-- Choose pay method -->
+                	<div class="t-m-top-30"> 
+						<strong class="t-line-2em">Chọn phương thức thanh toán:</strong> <br>
+						<input id="t-pay-offline" class="t-pay-offline t-pointer" style="height:16px; width:16px;" type="radio" name="t-pay-method" checked/> 
+						<label for="t-pay-offline" class="t-pointer">Thanh toán khi nhận hàng.</label> <br>
+						<input id="t-pay-online" class="t-pay-online t-top-8 t-pointer" style="height:16px; width:16px;" type="radio" name="t-pay-method"/>
+						<label for="t-pay-online" class="t-pointer">Thanh toán qua ví điện tử.</label> <br>
+					</div>
+					<!-- End choose pay method -->
+					
+                </div>
+                
+                <div class="product-btn">
+                    <a href="./" class="product-btn__return">
+                        <i class="fas fa-arrow-left"></i>
+                        <span class="product-btn__return-title">Tiếp tục mua hàng</span>
+                    </a>
+                    
+                    <a class="product-btn__pay t-pay">
+                        <span class="product-btn__pay-title t-no-click">Thanh toán</span>
+                        <i class="fas fa-arrow-right t-no-click"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="grid fix-wide" th:unless="${session.cartSize}">
+                 <div class="nocart">
+                     <h2 class="nocart__title">Rất tiếc !!! Bạn không có sản phẩm ở đây.</h2>
+                     <p class="nocart__content">Chúng tôi sẽ giao hàng với hoá đơn trên <span>100,000 đ</span></p>
+                 </div>
+             </div>
+        </div>
+        <!-- End container -->
+
+        <!-- Start footer -->
+        <footer class="footer">
+            <div class="grid fix-wide">
+                <div class="row">
+                    <div class="col l-3">
+                        <div class="footer__logo">
+                            <a href="/" class="">
+                                <img th:src="@{/img/logo-footer.png}" class="footer__logo-img"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col l-3 pd-bottom">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Giới thiệu</h3>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Hệ thống nhà hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Câu chuyện thương hiệu</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Ưu đãi thành viên</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Tin tức & sự kiện</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Tuyển dụng</span>
+                            </a>
+                        </div>
+                        <div class="footer__block">
+                            <h3 class="footer__block-title-vp">Văn phòng đại diện</h3>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">Công ty Cổ phần Pizza Ngon  77 Trần Nhân Tôn, Phường 9, Quận 5, Thành phố Hồ Chí Minh </span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">SĐT: +84 (028) 7308 3377 </span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">MST: 0104115527</span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">Cấp lần đầu ngày 17 tháng 08 năm 2009 và có thể được sửa đổi vào từng thời điểm</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col l-3">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Liên hệ</h3>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Liên hệ</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Hướng dẫn mua hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Chính sách giao hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Chính sách bảo mật</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Điều khoản và Điều kiện</span>
+                            </a>
+                        </div>
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Tổng đài hỗ trợ</h3>
+                            <span class="footer__block-option">Đặt hàng: 
+                                <a href="tel:19006066" class="footer__block-option-phone">1900 6066 </a>
+                                (9:30-21:30)
+                            </span>
+                            <span class="footer__block-option">Tổng đài SCKH: 
+                                <a href="tel:1900633606" class="footer__block-option-phone">1900 633 606 </a>
+                                (9:30-21:30)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col l-3">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Liên kết với chúng tôi</h3>
+                            <div class="footer__block-social">
+                                <a href="https://www.facebook.com/PhiTan2001.Com.Vn" target="_blank" class="footer__block-social-link">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="" class="footer__block-social-link">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="" class="footer__block-social-link">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                            <h3 class="footer__block-title-social">đăng ký thành viên qua địa chỉ email</h3>
+                            <div class="footer__block-mail">
+                                <input type="email" placeholder="Nhập địa chỉ email" name="" id="" class="footer__block-mail-input">
+                                <div class="footer__block-mail-send">
+                                    <span>GỬI</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                            <div class="footer__block-res">
+                                <img th:src="@{/img/bocongthuong.png}" class="footer__block-bct"></img>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End footer -->
+        <div class="footer__copyright">
+            <span class="footer__copyright-text">Copyright © 2021 The Pizza Company.</span>
+        </div>
+    </div>
+
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/cart.js}"></script>
+
+</body>
+</html>

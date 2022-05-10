@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaCompany</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/gird.css}">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <link rel="stylesheet" th:href="@{/css/account.css}">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/fonts/fontawesome-free-5.15.4-web/css/all.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style type="text/css">
+    	
+    </style>
+</head>
+<body>
+    
+    <div class="app">
+
+        <!-- Start header -->
+        <header class="header">
+            <div class="grid header-container">
+                <!-- Start header with logo -->
+                <div class="header-with-logo">
+                    <a href="/" class="header-logo-link">
+                        <div class="header-logo"></div>
+                    </a>
+
+                    <div class="header-account">
+                    	<!-- logined -->
+                    	<div class="header-account_login" th:if="${session.username}">
+                    		<i class="far fa-user header-account_login-icon"></i>
+                            <a href="#" class="header-account-text" th:text="${session.username}"></a>
+                        </div>
+                        
+                        <!-- if not login -->
+                        <div class="header-account_login" th:unless="${session.username}">
+                            <i class="far fa-user header-account_login-icon"></i>
+                            <a th:href="@{/auth/login}" class="header-account-text">Đăng nhập</a>
+                        </div>
+                        <span>/</span>
+                        <div class="header-account_register" th:unless="${session.username}">
+                            <a th:href="@{/auth/register}" class="header-account-text">Tạo tài khoản</a>
+                        </div>
+                        
+                        <!-- logined -->
+                        <div class="header-account_login" th:if="${session.username}">
+                            <a th:href="@{/api/v1/auth/logout}" class="header-account-text" >Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End header with logo -->
+
+                <!-- Start navbar -->
+                <nav class="navbar">
+                    <div class="navbar-select">
+                        <ul class="navbar-list">
+                        	<li class="navbar-list_item">
+                                <a href="/" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Trang chủ</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin-product" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý sản phẩm</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin-discount" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý mã giảm giá</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin-bill" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý hóa đơn</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin/seller" class="navbar-list_item-link" style="background-color: #005226;">
+                                    <span class="navbar-list_item-text">Quản lý nhân viên</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin/user" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý tài khoản</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                </nav>
+                <!-- Start navbar -->
+            </div>
+        </header>
+        <!-- End header -->
+
+
+        <!-- Start container -->
+        <div style="margin-bottom: 50px;" class="container">
+            <div class="grid fix-wide" style="padding-top: 45px">
+                <div class="container_header">
+                    <span class="container_header-text" >Quản lý nhân viên</span>
+                </div>
+            </div>
+
+            <div class="grid fix-wide">
+                <table class="table-bill">
+                    <thead >
+                        <tr style="background-color: rgba(31, 163, 101, 0.4);">
+                            <th scope="col" class="bill-index" >STT</th>
+                            <th scope="col" class="bill-information">Thông tin</th>
+                            <th scope="col" class="bill-order-date">Vai trò</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-bill-title" th:each="i: ${#numbers.sequence(sellers.size() - 1, 0, -1)}" th:with="seller = ${sellers[i]}">
+                    	<tr class="bill-information-detail">
+                            <th scope="row" class="bill-index" th:text="${i+1}" ></th>
+                            <td >
+                                Họ và tên:
+                                <span style="width:250px;display:inline-block" th:text="${seller.username}"></span>
+                                SĐT: 
+                                <span style="width:200px;display:inline-block; margin-left: 4px;" th:text="'03' + ${i+1} + ${i+6} + ${i+8} + '2084' + ${i}"></span>
+                                Email:
+                                <span style="margin-left: 4px;" th:text="${seller.username} + '@gmail.com'"></span></br><br>	
+                            </td>
+                            <td th:text="${seller.role}" style="text-align: center;"></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: center;">
+                                <span th:text="${seller.id}" style="display: none;"></span>
+                                <div class="remove_seller" style="padding: 6px 2px; cursor: pointer;">Xóa nhân viên</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <!-- End container -->
+
+        <!-- Start footer -->
+        <footer class="footer">
+            <div class="grid fix-wide">
+                <div class="row">
+                    <div class="col l-3">
+                        <div class="footer__logo">
+                            <a href="/" class="">
+                                <img th:src="@{/img/logo-footer.png}" class="footer__logo-img"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col l-3 pd-bottom">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Giới thiệu</h3>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Hệ thống nhà hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Câu chuyện thương hiệu</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Ưu đãi thành viên</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Tin tức & sự kiện</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Tuyển dụng</span>
+                            </a>
+                        </div>
+                        <div class="footer__block">
+                            <h3 class="footer__block-title-vp">Văn phòng đại diện</h3>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">Công ty Cổ phần Pizza Ngon  77 Trần Nhân Tôn, Phường 9, Quận 5, Thành phố Hồ Chí Minh </span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">SĐT: +84 (028) 7308 3377 </span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">MST: 0104115527</span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">Cấp lần đầu ngày 17 tháng 08 năm 2009 và có thể được sửa đổi vào từng thời điểm</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col l-3">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Liên hệ</h3>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Liên hệ</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Hướng dẫn mua hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Chính sách giao hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Chính sách bảo mật</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Điều khoản và Điều kiện</span>
+                            </a>
+                        </div>
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Tổng đài hỗ trợ</h3>
+                            <span class="footer__block-option">Đặt hàng: 
+                                <a href="tel:19006066" class="footer__block-option-phone">1900 6066 </a>
+                                (9:30-21:30)
+                            </span>
+                            <span class="footer__block-option">Tổng đài SCKH: 
+                                <a href="tel:1900633606" class="footer__block-option-phone">1900 633 606 </a>
+                                (9:30-21:30)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col l-3">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Liên kết với chúng tôi</h3>
+                            <div class="footer__block-social">
+                                <a href="https://www.facebook.com/docongban" target="_blank" class="footer__block-social-link">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="" class="footer__block-social-link">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="" class="footer__block-social-link">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                            <h3 class="footer__block-title-social">đăng ký thành viên qua địa chỉ email</h3>
+                            <div class="footer__block-mail">
+                                <input type="email" placeholder="Nhập địa chỉ email" name="" id="" class="footer__block-mail-input">
+                                <div class="footer__block-mail-send">
+                                    <span>GỬI</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                            <div class="footer__block-res">
+                                <img th:src="@{/img/bocongthuong.png}" class="footer__block-bct"></img>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End footer -->
+        <div class="footer__copyright">
+            <span class="footer__copyright-text">Copyright © 2021 The Pizza Company. Cloned by BanDC</span>
+        </div>
+    </div>
+
+    <script th:src="@{/js/seller.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Admin</title>
+	<style type="text/css">
+		.t-w-250 {
+			display: inline-block;
+			width: 250px;
+		}
+		
+		.t-none-border {
+			border: none !important;
+		}
+		
+		.t-form-area {
+			width: 60%;
+			margin: 150px auto 0;
+		}
+		
+		.t-form-area .t-w-input {
+			width: calc(100% - 200px);
+		}
+		
+		.t-form-area .t-input {
+			height: 40px;
+			outline: none;
+			min-width: 150px;
+			border-radius: 4px; 
+			border: 1px solid #aaa;
+		}
+		
+		.t-form-area .t-button:hover {
+			background-color: #ccc;
+		}
+		
+		.t-form-area form span {
+			font-size: 18px;
+			font-weight: bold;
+		}
+	
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+	<div class="t-form-area">
+		<form action="/admin/api/v1/discounts"  method="POST">
+			<span class="t-w-250">Phần trăm discount: (%)</span> 
+			<input class="t-input t-w-input" type="number" placeholder="Nhập phần trăm discount" name="discount" required/> <br> <br>
+			<span class="t-w-250">Giá trị để đạt discount:</span> 
+			<input class="t-input t-w-input" type="number" placeholder="Nhập giá trị để đạt được discount" name="value" required/> <br> <br>
+			<input class="t-input t-button" style="cursor: pointer; margin: 0 auto;" type="submit" value="Thêm" />
+			<button class="t-return t-input t-button" style="cursor: pointer; margin-left: 16px;">Hủy</button>
+		</form>
+	</div>
+	
+	<script type="text/javascript">
+		$(document).ready(function () {
+			// Click hủy
+			$('.t-return').click(function () {
+				window.location.href = document.referrer;
+			})
+		})
+	
+	</script>
+</body>
+</html>

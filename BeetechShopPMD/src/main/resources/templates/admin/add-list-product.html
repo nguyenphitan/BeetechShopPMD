@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Admin</title>
+	<style type="text/css">
+		.t-w-150 {
+			display: inline-block;
+			width: 150px;
+		}
+		
+		.t-w-180 {
+			display: inline-block;
+			width: 180px;
+		}
+		
+		.t-text-center {
+			text-align: center;
+		}
+		
+		.t-none-border {
+			border: none !important;
+		}
+		
+		.t-form-area {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 150px;
+		}
+		
+		.t-form-area .t-w-input {
+			width: calc(100% - 200px);
+		}
+		
+		.t-form-area .t-input {
+			height: 40px;
+			outline: none;
+			min-width: 150px;
+			border-radius: 4px; 
+			border: 1px solid #aaa;
+		}
+		
+		.t-form-area .t-button:hover {
+			background-color: #ccc;
+		}
+		
+		.t-form-area form span {
+			font-size: 18px;
+			font-weight: bold;
+		}
+	
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+	<div class="t-form-area">
+		<form action="/api/v1/csv/upload" enctype = "Multipart/form-data" method="POST">
+			<span class="t-w-150">Mô tả danh sách:</span> <br> <textarea style="width: 400px; height: 150px;" rows="" cols=""></textarea> <br> <br>
+			<span class="t-w-180">Danh sách sản phẩm:</span> <input class="t-input t-none-border" type="file" name="file" required/> <br> <br>
+			<input class="t-input t-button" style="cursor: pointer; margin: 0 auto;" type="submit" value="Thêm" />
+			<button class="t-return t-input t-button" style="cursor: pointer; margin-left: 16px;">Hủy</button>
+		</form>
+	</div>
+	
+	<script type="text/javascript">
+		$(document).ready(function () {
+			// Click hủy
+			$('.t-return').click(function () {
+				window.location.href = document.referrer;
+			})
+		})
+	
+	</script>
+</body>
+</html>

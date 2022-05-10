@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaCompany</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/gird.css}">
+    <link rel="stylesheet" th:href="@{/css/responsive.css}">
+    <link rel="stylesheet" th:href="@{/css/account.css}">
+    <link rel="stylesheet" th:href="@{/css/reset.css}">
+    <link rel="stylesheet" th:href="@{/fonts/fontawesome-free-5.15.4-web/css/all.min.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    
+    <div class="app">
+
+        <!-- Start header -->
+        <header class="header">
+            <div class="grid header-container">
+                <!-- Start header with logo -->
+                <div class="header-with-logo">
+                    <a href="/" class="header-logo-link">
+                        <div class="header-logo"></div>
+                    </a>
+
+                    <div class="header-account">
+                    	<!-- logined -->
+                    	<div class="header-account_login" th:if="${session.username}">
+                    		<i class="far fa-user header-account_login-icon"></i>
+                            <a href="#" class="header-account-text" th:text="${session.username}"></a>
+                        </div>
+                        
+                        <!-- if not login -->
+                        <div class="header-account_login" th:unless="${session.username}">
+                            <i class="far fa-user header-account_login-icon"></i>
+                            <a th:href="@{/auth/login}" class="header-account-text">Đăng nhập</a>
+                        </div>
+                        <span>/</span>
+                        <div class="header-account_register" th:unless="${session.username}">
+                            <a th:href="@{/auth/register}" class="header-account-text">Tạo tài khoản</a>
+                        </div>
+                        
+                        <!-- logined -->
+                        <div class="header-account_login" th:if="${session.username}">
+                            <a th:href="@{/api/v1/auth/logout}" class="header-account-text" >Đăng xuất</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End header with logo -->
+
+                <!-- Start navbar -->
+                <nav class="navbar">
+                    <div class="navbar-select">
+                        <ul class="navbar-list">
+                        	<li class="navbar-list_item">
+                                <a href="/" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Trang chủ</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin-product" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý sản phẩm</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin-discount" class="navbar-list_item-link" style="background-color: #005226;">
+                                    <span class="navbar-list_item-text">Quản lý mã giảm giá</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin-bill" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý hóa đơn</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin/seller" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý nhân viên</span>
+                                </a>
+                            </li>
+                            <li class="navbar-list_item">
+                                <a href="/admin/user" class="navbar-list_item-link">
+                                    <span class="navbar-list_item-text">Quản lý tài khoản</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    
+                </nav>
+                <!-- Start navbar -->
+            </div>
+        </header>
+        <!-- End header -->
+
+
+        <!-- Start container -->
+        <div style="margin-bottom: 50px;" class="container">
+            <div class="grid fix-wide" style="padding-top: 45px">
+                <div class="container_header">
+                    <span class="container_header-text" >Quản lý mã giảm giá</span>
+                </div>
+            </div>
+
+            <div class="grid fix-wide">
+            
+            	<!-- Add product -->
+		        <div class="t-add-area">
+		        	<a href="/admin/add-discount">Thêm mã giảm giá</a>
+		        </div>
+		        
+		        <!-- End add product -->
+		        
+                <table class="table-bill">
+                    <thead >
+                        <tr style="background-color: rgba(31, 163, 101, 0.4);">
+                            <th scope="col" class="bill-index" >STT</th>
+                            <th scope="col" class="bill-information">Thông tin</th>
+                            <th scope="col" class="bill-order-date">Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-bill-title" th:each="discount, index : ${discounts}">
+                    	<tr>
+                            <th scope="row" class="bill-index" th:text="${index.count}" ></th>
+                            <td class="t-info-col">
+                                <div>
+                                	<div>
+                                		Số tiền cần để đạt được discount:
+		                                <span class="t-title-1 t-w-100 t-text-right t-m-right-150" th:text="${discount.value}"></span>
+		                                <input hide class="t-hide t-outline-none input-name-update" type="text" th:value="${discount.value}">
+		                                Giá trị discount:
+		                                <span class="t-title-2" th:text="${discount.discount}"></span>
+		                                <input hide class="t-hide t-outline-none input-price-update t-text-right" type="text" th:value="${discount.discount}">
+		                                %
+                                	</div>
+                                </div>
+                            </td>
+                            <!-- <td style="text-align: center;">
+                            	<span class="product_id" style="display: none;" th:text="${product.id}"></span>
+                                <a href="#" class="delete_product t-btn-common t-m-w-134" style="padding: 6px 2px;">Xóa sản phẩm</a>
+                                <span class="account_role" th:text="${session.role}" style="display: none"></span>
+                            </td> -->
+                            
+                            <td class="t-func-col">
+                            	<div class="t-div-function">
+                            		<span class="t-no-click"> 
+                            			<svg style="width: 13px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                            				<path d="M311.9 335.1l-132.4 136.8C174.1 477.3 167.1 480 160 480c-7.055 0-14.12-2.702-19.47-8.109l-132.4-136.8C-9.229 317.8 3.055 288 27.66 288h264.7C316.9 288 329.2 317.8 311.9 335.1z"/>
+                            			</svg>
+                            		</span>
+                            		<div class="t-function-box">
+                            			<div>
+                            				<a class="t-function-item t-update">Sửa</a>
+	                            			<span class="t-hide" th:text="${discount.id}"></span>
+	                            			<a class="t-function-item t-delete">Xóa</a>	
+                            			</div>
+                            			<div class="t-hide">
+                            				<a class="t-function-item t-save-update">Lưu</a>
+	                            			<span class="t-hide" th:text="${discount.id}"></span>
+	                            			<a class="t-function-item t-cancel-update">Hủy</a>	
+                            			</div>
+                            		</div>
+                            	</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+        </div>
+        <!-- End container -->
+
+        <!-- Start footer -->
+        <footer class="footer">
+            <div class="grid fix-wide">
+                <div class="row">
+                    <div class="col l-3">
+                        <div class="footer__logo">
+                            <a href="/" class="">
+                                <img th:src="@{/img/logo-footer.png}" class="footer__logo-img"></img>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col l-3 pd-bottom">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Giới thiệu</h3>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Hệ thống nhà hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Câu chuyện thương hiệu</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Ưu đãi thành viên</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Tin tức & sự kiện</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Tuyển dụng</span>
+                            </a>
+                        </div>
+                        <div class="footer__block">
+                            <h3 class="footer__block-title-vp">Văn phòng đại diện</h3>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">Công ty Cổ phần Pizza Ngon  77 Trần Nhân Tôn, Phường 9, Quận 5, Thành phố Hồ Chí Minh </span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">SĐT: +84 (028) 7308 3377 </span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">MST: 0104115527</span>
+                            </a>
+                            <a href="" class="footer__block-link-vp">
+                                <span class="footer__block-option-vp">Cấp lần đầu ngày 17 tháng 08 năm 2009 và có thể được sửa đổi vào từng thời điểm</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col l-3">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Liên hệ</h3>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Liên hệ</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Hướng dẫn mua hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Chính sách giao hàng</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Chính sách bảo mật</span>
+                            </a>
+                            <a href="" class="footer__block-link">
+                                <span class="footer__block-option">Điều khoản và Điều kiện</span>
+                            </a>
+                        </div>
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Tổng đài hỗ trợ</h3>
+                            <span class="footer__block-option">Đặt hàng: 
+                                <a href="tel:19006066" class="footer__block-option-phone">1900 6066 </a>
+                                (9:30-21:30)
+                            </span>
+                            <span class="footer__block-option">Tổng đài SCKH: 
+                                <a href="tel:1900633606" class="footer__block-option-phone">1900 633 606 </a>
+                                (9:30-21:30)
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col l-3">
+                        <div class="footer__block">
+                            <h3 class="footer__block-title">Liên kết với chúng tôi</h3>
+                            <div class="footer__block-social">
+                                <a href="https://www.facebook.com/PhiTan2001.Com.Vn" target="_blank" class="footer__block-social-link">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="" class="footer__block-social-link">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="" class="footer__block-social-link">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                            <h3 class="footer__block-title-social">đăng ký thành viên qua địa chỉ email</h3>
+                            <div class="footer__block-mail">
+                                <input type="email" placeholder="Nhập địa chỉ email" name="" id="" class="footer__block-mail-input">
+                                <div class="footer__block-mail-send">
+                                    <span>GỬI</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                            <div class="footer__block-res">
+                                <img th:src="@{/img/bocongthuong.png}" class="footer__block-bct"></img>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- End footer -->
+        <div class="footer__copyright">
+            <span class="footer__copyright-text">Copyright © 2021 The Pizza Company.</span>
+        </div>
+    </div>
+
+    <script th:src="@{/js/discount.js}"></script>
+
+</body>
+</html>
